@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -33,6 +34,37 @@ export class CategoriesController {
 
     const newCategory = await this.categoriesService.create(createCategory);
     return newCategory;
+  }
+
+  @UsePipes(ValidationPipe)
+  @Put('/:id')
+  public async update(
+    @Body() categoryDatas: CreateCategoryDto,
+    @Param('id') id: string,
+  ): Promise<Categories> {
+    if (!categoryDatas?.name) throw new BadRequestException('Name is required');
+
+    const categoryById = await this.categoriesService.findById(id);
+    if (!categoryById) throw new NotFoundException('Category not found');
+
+    if (categoryDatas?.name !== categoryById?.name) {
+      const categoryByName = await this.categoriesService.findByName(
+        categoryDatas?.name,
+      );
+
+      if (categoryByName !== null)
+        throw new BadRequestException('This name is not available');
+    } else {
+      throw new BadRequestException(
+        'The name entered is the same as the current one',
+      );
+    }
+
+    const categoryUpdated = await this.categoriesService.update({
+      id,
+      data: categoryDatas,
+    });
+    return categoryUpdated;
   }
 
   @Get()
