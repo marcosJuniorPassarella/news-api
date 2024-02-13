@@ -19,4 +19,16 @@ export class CategoriesService {
     });
     return categorie;
   }
+
+  public async findAll(): Promise<Categories[]> {
+    const categories = await this.prismaService.categories.findMany();
+    return categories;
+  }
+
+  public async findById(id: string): Promise<Categories | null> {
+    const categorie = await this.prismaService.categories.findFirst({
+      where: { id },
+    });
+    return categorie;
+  }
 }
