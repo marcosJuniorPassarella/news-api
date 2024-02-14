@@ -14,9 +14,9 @@ import {
 } from '@nestjs/common';
 import { CreateNewsDto } from './dtos/CreateNews.dto';
 import { News } from '@prisma/client';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { NewsService } from './news.service';
-import { CategoriesService } from 'src/categories/categories.service';
+import { CategoriesService } from '../categories/categories.service';
 import { UpdateNewsDto } from './dtos/UpdateNews.dto';
 
 @Controller('news')
