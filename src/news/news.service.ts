@@ -14,4 +14,23 @@ export class NewsService {
     });
     return news;
   }
+
+  public async findAll(): Promise<News[]> {
+    const newsList = this.prismaService.news.findMany();
+    return newsList;
+  }
+
+  public async findById(id: string): Promise<News | null> {
+    const findNewById = this.prismaService.news.findFirst({
+      where: { id },
+    });
+    return findNewById;
+  }
+
+  public async findByCategory(category_id: string): Promise<News | null> {
+    const findNewByCategory = await this.prismaService.news.findFirst({
+      where: { category_id },
+    });
+    return findNewByCategory;
+  }
 }

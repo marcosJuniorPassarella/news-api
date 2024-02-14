@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   NotFoundException,
+  Param,
   Post,
   UsePipes,
   ValidationPipe,
@@ -31,5 +33,18 @@ export class NewsController {
 
     const news = await this.newsService.create(createNews);
     return news;
+  }
+
+  @Get()
+  public async index(): Promise<News[]> {
+    const newsList = this.newsService.findAll();
+    return newsList;
+  }
+
+  @Get('/:id')
+  public async show(@Param('id') id: string): Promise<News> {
+    const findNew = await this.newsService.findById(id);
+    if (!findNew) throw new NotFoundException('New not found');
+    return findNew;
   }
 }
