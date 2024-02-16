@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { prismaUserMock, userMock } from './mocks/user.mock';
 
-describe('TestService', () => {
+describe(`${UserService.name}`, () => {
   let service: UserService;
   let prismaService: PrismaService;
 
@@ -78,16 +78,19 @@ describe('TestService', () => {
   });
 
   it(`${UserService.prototype.update.name}() should update user`, async () => {
+    jest
+      .spyOn(prismaService.users, 'update')
+      .mockResolvedValueOnce(userMock[1]);
     const response = await service.update({
       id: userMock[0].id,
-      data: userMock[0],
+      data: userMock[1],
     });
 
-    expect(response).toEqual(userMock[0]);
+    expect(response.name).toEqual(userMock[1].name);
     expect(prismaService.users.update).toHaveBeenCalledTimes(1);
     expect(prismaService.users.update).toHaveBeenCalledWith({
       where: { id: userMock[0].id },
-      data: { name: userMock[0].name, email: userMock[0].email },
+      data: { name: userMock[1].name, email: userMock[1].email },
     });
   });
 
