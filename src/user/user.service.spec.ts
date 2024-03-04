@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from './user.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { UserService } from './user.service';
 import { prismaUserMock, userMock } from './mocks/user.mock';
 
 describe(`${UserService.name}`, () => {
@@ -19,7 +19,6 @@ describe(`${UserService.name}`, () => {
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
-  // limpar os mocks apos a execução de cada teste
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -47,12 +46,13 @@ describe(`${UserService.name}`, () => {
 
   it(`${UserService.prototype.findByEmail.name}() should return null when user is not found`, async () => {
     jest.spyOn(prismaService.users, 'findFirst').mockResolvedValueOnce(null);
-    const response = await service.findByEmail('fake@fake.com');
+    const fakeEmail = 'mock@mock.fail';
+    const response = await service.findByEmail(fakeEmail);
 
     expect(response).toEqual(null);
     expect(prismaService.users.findFirst).toHaveBeenCalledTimes(1);
     expect(prismaService.users.findFirst).toHaveBeenCalledWith({
-      where: { email: 'fake@fake.com' },
+      where: { email: fakeEmail },
     });
   });
 
@@ -68,12 +68,13 @@ describe(`${UserService.name}`, () => {
 
   it(`${UserService.prototype.findById.name}() should return null when user is not found`, async () => {
     jest.spyOn(prismaService.users, 'findFirst').mockResolvedValueOnce(null);
-    const response = await service.findById('123');
+    const fakeId = '123456';
+    const response = await service.findById(fakeId);
 
-    expect(response).toEqual(null);
+    expect(response).toBeNull();
     expect(prismaService.users.findFirst).toHaveBeenCalledTimes(1);
     expect(prismaService.users.findFirst).toHaveBeenCalledWith({
-      where: { id: '123' },
+      where: { id: fakeId },
     });
   });
 
@@ -81,6 +82,7 @@ describe(`${UserService.name}`, () => {
     jest
       .spyOn(prismaService.users, 'update')
       .mockResolvedValueOnce(userMock[1]);
+
     const response = await service.update({
       id: userMock[0].id,
       data: userMock[1],
@@ -96,16 +98,16 @@ describe(`${UserService.name}`, () => {
 
   it(`${UserService.prototype.update.name}() should return null when user is not found`, async () => {
     jest.spyOn(prismaService.users, 'update').mockResolvedValueOnce(null);
-
+    const fakeId = '89632';
     const response = await service.update({
-      id: '123',
+      id: fakeId,
       data: userMock[0],
     });
 
-    expect(response).toEqual(null);
+    expect(response).toBeNull();
     expect(prismaService.users.update).toHaveBeenCalledTimes(1);
     expect(prismaService.users.update).toHaveBeenCalledWith({
-      where: { id: '123' },
+      where: { id: fakeId },
       data: { name: userMock[0].name, email: userMock[0].email },
     });
   });

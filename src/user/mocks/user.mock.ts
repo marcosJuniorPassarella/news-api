@@ -22,9 +22,9 @@ export const userMock: Users[] = [
 export const prismaUserMock = {
   users: {
     create: jest.fn().mockReturnValue(userMock[0]),
-    findMany: jest.fn().mockResolvedValue(userMock),
-    findFirst: jest.fn().mockResolvedValue(userMock[0]),
-    update: jest.fn().mockResolvedValue(userMock[0]),
+    findMany: jest.fn().mockReturnValue(userMock),
+    findFirst: jest.fn().mockReturnValue(userMock[0]),
+    update: jest.fn().mockReturnValue(userMock[0]),
     delete: jest.fn(),
   },
 };
