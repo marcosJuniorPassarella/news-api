@@ -12,9 +12,9 @@ export const newsMock: News[] = [
     updated_at: new Date(),
   },
   {
-    id: 'sgdfgdfgdfgfdgfdgfdgdgfdgdgfd',
-    title: 'Teste edição de notícia 2',
-    content: 'Teste edição de conteúdo 2',
+    id: 'fgfdgfdgdgfd-82d6-460e-ac5d-757ea56993bf',
+    title: 'Testando criação de notícia',
+    content: 'Conteúdo de uma notícia',
     publication_date: new Date(),
     author_id: '551e8656-f062-4e79-a7a8-c1fb55f4667c',
     category_id: '51ba8afd-650c-415c-91c9-019751790f9e',
