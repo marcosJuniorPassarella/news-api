@@ -30,7 +30,6 @@ export class UserController {
   @UsePipes(ValidationPipe)
   @Post()
   public async store(@Body() createUser: CreateUserDto): Promise<Users> {
-    console.log(createUser);
     if (!createUser?.name || !createUser?.email || !createUser?.password)
       throw new BadRequestException('Name, email and password is required!');
 
